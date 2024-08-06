@@ -1,19 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { CreateSubServiceDto } from './dto/create-sub-service.dto';
 import { UpdateSubServiceDto } from './dto/update-sub-service.dto';
+import { DataSource } from 'typeorm';
 
 @Injectable()
 export class SubServicesService {
+  constructor(private dataSource: DataSource) {}
   create(createSubServiceDto: CreateSubServiceDto) {
     return 'This action adds a new subService';
   }
 
-  findAll() {
-    return `This action returns all subServices`;
+  async findAll() {
+    const rawData = await this.dataSource.query("SELECT * FROM servicesubcategory LIMIT 3");
+    return rawData;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} subService`;
+  async findOne(id: number) {
+    const rawData = await this.dataSource.query(`SELECT * FROM servicesubcategory where id=${id}`);
+    return rawData;
   }
 
   update(id: number, updateSubServiceDto: UpdateSubServiceDto) {
